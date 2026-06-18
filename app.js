@@ -2,6 +2,24 @@
 
 const API_BASE = "/api";
 
+// Custom toast notification system
+function showToast(message, type = "success") {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+    
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<span>${message}</span>`;
+    
+    container.appendChild(toast);
+    
+    // Animate out and remove
+    setTimeout(() => {
+        toast.style.animation = "slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards";
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
 const ELECTION_LIMITS = {
     presidential: { label: "Presidential", limit2022: 5000000000 },
     gubernatorial: { label: "Gubernatorial", limit2022: 1000000000 },
@@ -243,14 +261,14 @@ document.getElementById("btn-save-rally").addEventListener("click", async () => 
             body: JSON.stringify(payload)
         });
         if (res.ok) {
-            alert("Rally Log Saved & Candidate Expenditures Re-estimated!");
+            showToast("Rally Log Saved & Candidate Expenditures Re-estimated!", "success");
             await loadData();
         } else {
             const err = await res.json();
-            alert("Error: " + err.detail);
+            showToast("Error: " + err.detail, "error");
         }
     } catch (err) {
-        alert("Failed to submit rally log: " + err.message);
+        showToast("Failed to submit rally log: " + err.message, "error");
     } finally {
         btn.disabled = false;
         btn.innerText = "💾 Save Rally to Database";
@@ -326,7 +344,7 @@ document.getElementById("btn-discover").addEventListener("click", async () => {
     const statusMsg = document.getElementById("discover-status-msg");
     const btn = document.getElementById("btn-discover");
 
-    statusMsg.innerText = `Searching the web with Tavily for recent ${candName} rallies...`;
+    statusMsg.innerText = `Searching the web for recent ${candName} rallies...`;
     statusMsg.style.color = "var(--accent-color)";
     btn.disabled = true;
 
@@ -342,7 +360,7 @@ document.getElementById("btn-discover").addEventListener("click", async () => {
             const list = data.results;
             if (list.length > 0) {
                 const firstMatch = list[0];
-                statusMsg.innerText = `Found article: "${firstMatch.title}" (${firstMatch.parsed_via}). Updated parameters below.`;
+                statusMsg.innerText = `Found article: "${firstMatch.title}". Updated parameters below.`;
                 statusMsg.style.color = "var(--accent-emerald)";
 
                 // Update calculator inputs
