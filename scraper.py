@@ -8,6 +8,46 @@ from dotenv import load_dotenv
 # Load API keys from environment
 load_dotenv()
 
+# Try loading YouTube Transcript API
+HAS_YT_API = False
+try:
+    from youtube_transcript_api import YouTubeTranscriptApi
+    HAS_YT_API = True
+except ImportError:
+    pass
+
+def extract_youtube_video_id(url: str):
+    """
+    Extracts the 11-character video ID from a YouTube URL.
+    """
+    # e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    if "v=" in url:
+        return url.split("v=")[1].split("&")[0]
+    # e.g., https://youtu.be/dQw4w9WgXcQ
+    if "youtu.be/" in url:
+        return url.split("youtu.be/")[1].split("?")[0]
+    return None
+
+def get_youtube_transcript(video_url: str):
+    """
+    Uses youtube-transcript-api to download the video transcript text.
+    """
+    if not HAS_YT_API:
+        print("youtube-transcript-api is not installed.")
+        return None
+        
+    video_id = extract_youtube_video_id(video_url)
+    if not video_id:
+        return None
+    try:
+        # Fetch transcript (tries English by default, supports auto-generated)
+        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript_text = " ".join([t['text'] for t in transcript_list])
+        return transcript_text
+    except Exception as e:
+        print(f"Error fetching YouTube transcript for {video_id}: {e}")
+        return None
+
 def run_heuristics_fallback(combined_text):
     """
     Standard regex-based pattern matching fallback if AI API is unavailable or fails.
@@ -60,28 +100,51 @@ def run_heuristics_fallback(combined_text):
 
 def scrape_article(url: str):
     try:
-        import urllib3
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-        
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        res = requests.get(url, headers=headers, timeout=10, verify=False)
-        if res.status_code != 200:
-            return {"error": f"Failed to fetch webpage (Status code: {res.status_code})"}
-        
-        soup = BeautifulSoup(res.text, 'html.parser')
-        title = soup.title.string if soup.title else ""
-        paragraphs = soup.find_all('p')
-        body_text = " ".join([p.get_text() for p in paragraphs])
-        combined_text = f"{title} {body_text}"
+        title = "Scraped Report"
+        combined_text = ""
+        is_youtube = "youtube.com" in url or "youtu.be" in url
+
+        if is_youtube:
+            # Handle YouTube URL
+            transcript = get_youtube_transcript(url)
+            if transcript:
+                combined_text = f"YouTube video transcript content: {transcript}"
+                title = "YouTube Video Coverage Transcript"
+            else:
+                # If transcript fetching fails, get page metadata details
+                import urllib3
+                urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                headers = {'User-Agent': 'Mozilla/5.0'}
+                res = requests.get(url, headers=headers, timeout=10, verify=False)
+                if res.status_code == 200:
+                    soup = BeautifulSoup(res.text, 'html.parser')
+                    title = soup.title.string if soup.title else "YouTube Video"
+                    meta_desc = soup.find('meta', attrs={'name': 'description'})
+                    desc_text = meta_desc['content'] if meta_desc else ""
+                    combined_text = f"YouTube Video Title: {title}. Video Description: {desc_text}"
+        else:
+            # Standard HTML webpage scraping
+            import urllib3
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            res = requests.get(url, headers=headers, timeout=10, verify=False)
+            if res.status_code != 200:
+                return {"error": f"Failed to fetch webpage (Status code: {res.status_code})"}
+            
+            soup = BeautifulSoup(res.text, 'html.parser')
+            title = soup.title.string if soup.title else "News Article"
+            paragraphs = soup.find_all('p')
+            body_text = " ".join([p.get_text() for p in paragraphs])
+            combined_text = f"{title} {body_text}"
 
         parsed_data = None
         openai_key = os.environ.get("OPENAI_API_KEY")
         used_openai = False
 
         # Call OpenAI Chat Completion via direct REST endpoint
-        if openai_key:
+        if openai_key and len(combined_text) > 50:
             try:
                 endpoint = "https://api.openai.com/v1/chat/completions"
                 headers_openai = {
@@ -121,7 +184,6 @@ def scrape_article(url: str):
                     "temperature": 0.2
                 }
                 
-                # Direct post bypassing local SSL verification
                 response = requests.post(endpoint, json=payload, headers=headers_openai, timeout=15, verify=False)
                 if response.status_code == 200:
                     resp_json = response.json()
