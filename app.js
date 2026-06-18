@@ -1,6 +1,6 @@
 // PoliTrack - Connected Dashboard Logic & Datasets
 
-const API_BASE = "http://127.0.0.1:8000/api";
+const API_BASE = "/api";
 
 const ELECTION_LIMITS = {
     presidential: { label: "Presidential", limit2022: 5000000000 },
