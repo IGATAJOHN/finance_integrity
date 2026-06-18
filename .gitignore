@@ -1,0 +1,7 @@
+.env
+*.db
+__pycache__/
+.system_generated/
+.idea/
+.vscode/
+node_modules/

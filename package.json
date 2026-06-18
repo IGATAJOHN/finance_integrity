@@ -1,0 +1,11 @@
+{
+  "name": "nigeria-campaign-finance-integrity",
+  "version": "1.0.0",
+  "description": "Interactive campaign finance tracker for Nigerian elections, comparing estimated spending against limits set by the Electoral Act.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y browser-sync start --server --files \"*.html, *.css, *.js\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

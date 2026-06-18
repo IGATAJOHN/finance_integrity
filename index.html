@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NairaTrack // Nigeria Campaign Finance Integrity Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <span class="logo-icon">🇳🇬</span>
+                <div class="logo-text">
+                    <h1>NairaTrack</h1>
+                    <span class="tagline">Finance Integrity</span>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="overview">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Overview
+                </button>
+                <button class="nav-item" data-tab="estimator">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Rally Estimator
+                </button>
+                <button class="nav-item" data-tab="candidates">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Candidate Tracker
+                </button>
+                <button class="nav-item" data-tab="map-view">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                    State Spending Map
+                </button>
+                <button class="nav-item" data-tab="laws">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Electoral Laws
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <p>Electoral Act 2022 & 2026 Audit</p>
+                <span class="status-indicator">● Active Monitoring</span>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-title-wrapper">
+                    <h2 id="page-title">Dashboard Overview</h2>
+                    <p class="subtitle" id="page-subtitle">Track compliance and excessive campaign expenditures in Nigerian elections</p>
+                </div>
+                <div class="header-actions">
+                    <div class="currency-badge">
+                        <span>Base Currency: <strong>NGN (₦)</strong></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab: Overview -->
+            <section id="tab-overview" class="tab-panel active">
+                <div class="grid-layout">
+                    <!-- Quick Stats Cards -->
+                    <div class="stats-card glass">
+                        <div class="card-header">
+                            <h3>Estimated Total Spending</h3>
+                            <span class="card-icon">₦</span>
+                        </div>
+                        <div class="card-value font-outfit" id="stat-total-spending">₦0.00</div>
+                        <p class="card-subtext color-danger">▲ Average 145x above legal limits</p>
+                    </div>
+
+                    <div class="stats-card glass">
+                        <div class="card-header">
+                            <h3>Tracked Candidates</h3>
+                            <span class="card-icon">👥</span>
+                        </div>
+                        <div class="card-value font-outfit" id="stat-tracked-candidates">0</div>
+                        <p class="card-subtext">Across 5 major political parties</p>
+                    </div>
+
+                    <div class="stats-card glass">
+                        <div class="card-header">
+                            <h3>Rallies Recorded</h3>
+                            <span class="card-icon">📢</span>
+                        </div>
+                        <div class="card-value font-outfit" id="stat-tracked-rallies">0</div>
+                        <p class="card-subtext">Estimated log of vehicle, fuel, & delegate costs</p>
+                    </div>
+
+                    <div class="stats-card glass">
+                        <div class="card-header">
+                            <h3>Average Excess Factor</h3>
+                            <span class="card-icon">⚠️</span>
+                        </div>
+                        <div class="card-value font-outfit text-danger" id="stat-average-excess">0x</div>
+                        <p class="card-subtext color-danger">Relative to Electoral Act limits</p>
+                    </div>
+                </div>
+
+                <!-- Main charts/visual grid -->
+                <div class="grid-two-col margin-top-md">
+                    <!-- Spending vs Legal Limits Chart Area -->
+                    <div class="dashboard-card glass">
+                        <h3>Spending vs. Legal Limits By Category</h3>
+                        <p class="card-description">Comparing average actual estimated spend against Electoral Act limits.</p>
+                        <div class="chart-container" id="bar-chart-container">
+                            <!-- JS will inject dynamic progress bars showing the gap -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Highlight Violations -->
+                    <div class="dashboard-card glass">
+                        <h3>Critical Campaign Excesses</h3>
+                        <p class="card-description">Estimated spending spikes identified in recent events.</p>
+                        <div class="list-container" id="recent-violations-list">
+                            <!-- Dynamic items injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Estimator -->
+            <section id="tab-estimator" class="tab-panel">
+                <div class="grid-two-col">
+                    <!-- Configurator Form -->
+                    <div class="dashboard-card glass">
+                        <h3>Rally Expense Calculator</h3>
+                        <p class="card-description">Configure the parameters of a typical political rally to estimate the real-world cost.</p>
+                        <form id="estimator-form">
+                            <!-- Transportation Section -->
+                            <div class="form-group-section">
+                                <h4>1. Transportation & Logistics</h4>
+                                <div class="form-control">
+                                    <label for="est-buses">Buses Hired (Coasters, HiAce)</label>
+                                    <input type="range" id="est-buses" min="10" max="1000" step="10" value="150">
+                                    <div class="range-value"><span id="val-buses">150</span> buses</div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="est-bus-hire">Bus Hire Cost per Day (₦)</label>
+                                    <input type="range" id="est-bus-hire" min="20000" max="150000" step="5000" value="60000">
+                                    <div class="range-value">₦<span id="val-bus-hire">60,000</span> / bus</div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="est-suvs">VIP SUVs / Security Vehicles</label>
+                                    <input type="range" id="est-suvs" min="5" max="100" step="5" value="25">
+                                    <div class="range-value"><span id="val-suvs">25</span> vehicles</div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="est-fuel-liters">Fuel (Liters per Vehicle)</label>
+                                    <input type="range" id="est-fuel-liters" min="20" max="100" step="5" value="50">
+                                    <div class="range-value"><span id="val-fuel-liters">50</span> Liters</div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="est-fuel-price">Fuel Price per Liter (₦)</label>
+                                    <input type="number" id="est-fuel-price" value="1200" min="500" max="2500" step="50">
+                                </div>
+                            </div>
+
+                            <!-- Delegates Section -->
+                            <div class="form-group-section">
+                                <h4>2. Mobilization & Delegates</h4>
+                                <div class="form-control">
+                                    <label for="est-delegates">Number of Mobilized Attendees / Delegates</label>
+                                    <input type="range" id="est-delegates" min="500" max="50000" step="500" value="8000">
+                                    <div class="range-value"><span id="val-delegates">8,000</span> people</div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="est-allowance">Transport Stipend per Attendee (₦)</label>
+                                    <input type="range" id="est-allowance" min="2000" max="25000" step="1000" value="10000">
+                                    <div class="range-value">₦<span id="val-allowance">10,000</span> / person</div>
+                                </div>
+                            </div>
+
+                            <!-- Publicity & Venue -->
+                            <div class="form-group-section">
+                                <h4>3. Operations, Media & Venue</h4>
+                                <div class="form-control">
+                                    <label for="est-venue">Stadium / Venue Hire (₦)</label>
+                                    <input type="number" id="est-venue" value="5000000">
+                                </div>
+                                <div class="form-control">
+                                    <label for="est-publicity">Billboards, Media & TV Hype (₦)</label>
+                                    <input type="number" id="est-publicity" value="15000000">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Tavily Campaign Auto-Discovery Form -->
+                    <div class="dashboard-card glass margin-bottom-md" style="border-color: rgba(16, 185, 129, 0.2);">
+                        <h3>Tavily Rally Auto-Discovery</h3>
+                        <p class="card-description">Search the web dynamically using Tavily to find and calculate recent rally costs for a candidate.</p>
+                        <div class="form-control" style="margin-bottom: 0.75rem;">
+                            <label for="discover-cand-select">Select Candidate to Search:</label>
+                            <select id="discover-cand-select" style="width: 100%; padding: 0.75rem 1rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); border-radius: var(--border-radius-md); color: var(--text-primary); outline: none;">
+                                <!-- Dynamically populated via JS -->
+                            </select>
+                        </div>
+                        <button type="button" id="btn-discover" style="width: 100%; padding: 0.75rem; background: var(--accent-emerald); border: none; border-radius: var(--border-radius-md); color: white; font-weight: 600; cursor: pointer; transition: var(--transition-smooth);">🔍 Discover & Estimate Rallies</button>
+                        <div id="discover-status-msg" style="font-size: 0.8rem; text-align: center; color: var(--text-secondary); margin-top: 0.75rem;"></div>
+                    </div>
+
+                    <!-- News Article Auto-Scraper Form -->
+                    <div class="dashboard-card glass margin-bottom-md" style="border-color: rgba(59, 130, 246, 0.2);">
+                        <h3>AI News Scraper (Beta)</h3>
+                        <p class="card-description">Paste a news article URL covering a rally to auto-extract logistics parameters using heuristics.</p>
+                        <div class="form-control">
+                            <input type="url" id="scrape-url" placeholder="https://punchng.com/tinubu-holds-massive-rally-in-lagos..." style="width: 100%; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); border-radius: var(--border-radius-md); color: var(--text-primary); outline: none; transition: var(--transition-smooth); margin-bottom: 0.75rem;">
+                            <button type="button" id="btn-scrape" style="width: 100%; padding: 0.75rem; background: var(--accent-color); border: none; border-radius: var(--border-radius-md); color: white; font-weight: 600; cursor: pointer; transition: var(--transition-smooth);">Auto-Extract Parameters</button>
+                        </div>
+                        <div id="scrape-status-msg" style="font-size: 0.8rem; text-align: center; color: var(--text-secondary);"></div>
+                    </div>
+
+                    <!-- Calculator Results -->
+                    <div class="dashboard-card glass result-card sticky-card">
+                        <h3>Estimated Rally Cost</h3>
+                        <div class="mega-spend font-outfit" id="total-rally-cost">₦0.00</div>
+
+                        <!-- Dropdown to link candidate -->
+                        <div class="form-control" style="margin-bottom: 1.5rem;">
+                            <label for="est-cand-select">Assign Rally to Candidate:</label>
+                            <select id="est-cand-select" style="width: 100%; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-glass); border-radius: var(--border-radius-md); color: var(--text-primary); outline: none;">
+                                <!-- Dynamically populated via JS -->
+                            </select>
+                        </div>
+
+                        <!-- Input to allocate location -->
+                        <div class="form-control" style="margin-bottom: 1.5rem;">
+                            <label for="est-location-select">Rally Location (State):</label>
+                            <select id="est-location-select" style="width: 100%; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-glass); border-radius: var(--border-radius-md); color: var(--text-primary); outline: none;">
+                                <option value="Lagos">Lagos</option>
+                                <option value="Kano">Kano</option>
+                                <option value="Rivers">Rivers</option>
+                                <option value="Kaduna">Kaduna</option>
+                                <option value="Oyo">Oyo</option>
+                                <option value="Enugu">Enugu</option>
+                                <option value="Anambra">Anambra</option>
+                                <option value="FCT">FCT</option>
+                            </select>
+                        </div>
+
+                        <button id="btn-save-rally" style="width: 100%; padding: 0.85rem; background: var(--accent-emerald); border: none; border-radius: var(--border-radius-md); color: white; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); margin-bottom: 1.5rem;">💾 Save Rally to Database</button>
+
+                        <div class="breakdown-list">
+                            <div class="breakdown-item">
+                                <span>Bus Transport / Hire:</span>
+                                <strong id="br-bus-cost">₦0.00</strong>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Vehicle Fuel Cost:</span>
+                                <strong id="br-fuel-cost">₦0.00</strong>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Mobilization Stipends:</span>
+                                <strong id="br-delegate-cost">₦0.00</strong>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Venue & Publicity:</span>
+                                <strong id="br-venue-publicity">₦0.00</strong>
+                            </div>
+                        </div>
+
+                        <div class="gap-comparison-box margin-top-md">
+                            <h4>Comparison with Legal Limits</h4>
+                            <p class="subtext">How many of these rallies can a candidate hold before breaching the law?</p>
+                            
+                            <div class="limit-comparison-item">
+                                <span>Presidential Limit (₦5.0B):</span>
+                                <strong id="comp-presidential">0 Rallies</strong>
+                            </div>
+                            <div class="limit-comparison-item">
+                                <span>Gubernatorial Limit (₦1.0B):</span>
+                                <strong id="comp-gubernatorial">0 Rallies</strong>
+                            </div>
+                            <div class="limit-comparison-item text-danger">
+                                <span>Senatorial Limit (₦100M):</span>
+                                <strong id="comp-senatorial">0 Rallies</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Candidates -->
+            <section id="tab-candidates" class="tab-panel">
+                <div class="candidate-filters glass">
+                    <label for="filter-election-type">Election Category:</label>
+                    <select id="filter-election-type">
+                        <option value="all">All Categories</option>
+                        <option value="presidential">Presidential</option>
+                        <option value="gubernatorial">Gubernatorial</option>
+                        <option value="senatorial">Senatorial</option>
+                    </select>
+                </div>
+
+                <div class="candidates-grid" id="candidates-grid-container">
+                    <!-- Dynamic candidate cards will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Tab: State Spending Map -->
+            <section id="tab-map-view" class="tab-panel">
+                <div class="grid-two-col">
+                    <!-- Nigeria Map Visualizer -->
+                    <div class="dashboard-card glass map-card">
+                        <h3>Estimated Spending Heatmap</h3>
+                        <p class="card-description">Click on states to see estimated gubernatorial and campaign spending limits vs. breaches.</p>
+                        
+                        <div class="map-wrapper">
+                            <!-- Beautiful simplified Map of Nigeria using SVG paths -->
+                            <svg id="nigeria-svg" viewBox="0 0 800 600" width="100%" height="100%" class="svg-map">
+                                <!-- Background map path definitions (interactive circles/hex grid will be generated via JS for modern glassmorphic look if path rendering is complex, but let's build a clean interactive structural layout representing regions/states) -->
+                                <g id="states-group">
+                                    <!-- States will be generated dynamically or represented with clickable nodes to ensure high compatibility and beautiful responsive visualization -->
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Map Details Info Panel -->
+                    <div class="dashboard-card glass detail-card">
+                        <h3 id="map-state-title">Select a State</h3>
+                        <p class="card-description">Click on any state on the map to load regional campaign finance analysis.</p>
+                        
+                        <div id="state-detail-content" class="hidden">
+                            <div class="metric-group">
+                                <span class="label">Total Rallies Held:</span>
+                                <span class="value font-outfit" id="state-rallies">0</span>
+                            </div>
+                            <div class="metric-group">
+                                <span class="label">Estimated State Campaign Spend:</span>
+                                <span class="value font-outfit" id="state-total-spend">₦0.00</span>
+                            </div>
+                            <div class="metric-group">
+                                <span class="label">Gubernatorial Legal Limit:</span>
+                                <span class="value font-outfit text-success" id="state-limit">₦1,000,000,000</span>
+                            </div>
+                            <div class="metric-group">
+                                <span class="label">Excess Spending Ratio:</span>
+                                <span class="value font-outfit text-danger" id="state-excess-ratio">0x</span>
+                            </div>
+
+                            <div class="progress-bar-container margin-top-md">
+                                <div class="progress-bar-label">
+                                    <span>Electoral Limit Utilization</span>
+                                    <span id="state-utilization-pct">0%</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="state-bar-fill"></div>
+                                </div>
+                            </div>
+
+                            <div class="state-candidates-list margin-top-md">
+                                <h4>Key Local Gubernatorial Contenders</h4>
+                                <ul id="state-candidates-ul">
+                                    <!-- Injected via JS -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="state-detail-fallback">
+                            <p class="placeholder-text">Please click on a state/region to inspect political spend logs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Electoral Laws -->
+            <section id="tab-laws" class="tab-panel">
+                <div class="laws-grid">
+                    <div class="dashboard-card glass">
+                        <h3>Electoral Act 2022 Statutory Limits</h3>
+                        <p class="card-description">Established limits for candidate election expenses before recent amendments.</p>
+                        
+                        <div class="laws-list">
+                            <div class="law-item">
+                                <div class="law-title">Presidential Election</div>
+                                <div class="law-limit">₦5,000,000,000 (5 Billion)</div>
+                            </div>
+                            <div class="law-item">
+                                <div class="law-title">Gubernatorial Election</div>
+                                <div class="law-limit">₦1,000,000,000 (1 Billion)</div>
+                            </div>
+                            <div class="law-item">
+                                <div class="law-title">Senatorial Election</div>
+                                <div class="law-limit">₦100,000,000 (100 Million)</div>
+                            </div>
+                            <div class="law-item">
+                                <div class="law-title">House of Representatives</div>
+                                <div class="law-limit">₦70,000,000 (70 Million)</div>
+                            </div>
+                            <div class="law-item">
+                                <div class="law-title">State House of Assembly</div>
+                                <div class="law-limit">₦30,000,000 (30 Million)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card glass">
+                        <h3>Electoral Act 2026 Proposed Limits</h3>
+                        <p class="card-description">Updated limits reflecting high inflation and economic realities.</p>
+                        
+                        <div class="laws-list">
+                            <div class="law-item accent-blue">
+                                <div class="law-title">Presidential Election</div>
+                                <div class="law-limit">₦10,000,000,000 (10 Billion)</div>
+                            </div>
+                            <div class="law-item accent-blue">
+                                <div class="law-title">Gubernatorial Election</div>
+                                <div class="law-limit">₦3,000,000,000 (3 Billion)</div>
+                            </div>
+                            <div class="law-item accent-blue">
+                                <div class="law-title">Senatorial Election</div>
+                                <div class="law-limit">₦500,000,000 (500 Million)</div>
+                            </div>
+                            <div class="law-item accent-blue">
+                                <div class="law-title">House of Representatives</div>
+                                <div class="law-limit">₦250,000,000 (250 Million)</div>
+                            </div>
+                            <div class="law-item accent-blue">
+                                <div class="law-title">State House of Assembly</div>
+                                <div class="law-limit">₦100,000,000 (100 Million)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card glass margin-top-md">
+                    <h3>Legal Provisions & Individual Donation Limits</h3>
+                    <p class="card-description">Key structural provisions from Section 88 of the Electoral Act 2022:</p>
+                    <ul class="provisions-list">
+                        <li><strong>Section 88(8):</strong> No individual or other entity shall donate to a candidate more than ₦50,000,000 (2022) / ₦500,000,000 (2026).</li>
+                        <li><strong>Section 89:</strong> Political parties must submit audit reports of campaign expenses within 6 months after an election.</li>
+                        <li><strong>Penalties:</strong> Candidates breaching these sections are liable to fines of up to ₦1,000,000 or imprisonment.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Candidate Detail Modal -->
+    <div class="modal-backdrop hidden" id="candidate-modal">
+        <div class="modal-content glass">
+            <button class="modal-close-btn" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body-content">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
