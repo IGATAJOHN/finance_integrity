@@ -11,7 +11,7 @@ from database import get_db, seed_initial_data, Candidate, Rally, StateSummary
 from scraper import scrape_article
 from discoverer import discover_rallies
 
-app = FastAPI(title="NairaTrack API", description="Nigeria Campaign Finance Integrity Backend")
+app = FastAPI(title="PoliTrack API", description="Nigeria Campaign Finance Integrity Backend")
 
 # Enable CORS for frontend integration
 app.add_middleware(
