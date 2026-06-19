@@ -578,4 +578,30 @@ function initMapVisualization() {
 window.addEventListener("DOMContentLoaded", () => {
     loadData();
     updateCalculator();
+
+    // Mobile sidebar navigation toggles
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebarClose = document.getElementById("sidebar-close");
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.add("active");
+        });
+    }
+
+    if (sidebarClose && sidebar) {
+        sidebarClose.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+        });
+    }
+
+    // Auto-close sidebar on menu link clicks on mobile viewports
+    document.querySelectorAll(".nav-item").forEach(button => {
+        button.addEventListener("click", () => {
+            if (sidebar && window.innerWidth <= 768) {
+                sidebar.classList.remove("active");
+            }
+        });
+    });
 });

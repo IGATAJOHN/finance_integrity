@@ -13,7 +13,8 @@
 <body>
     <div class="app-container">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
+            <button id="sidebar-close" class="sidebar-close-btn" aria-label="Close Sidebar">&times;</button>
             <div class="logo-area">
                 <span class="logo-icon">🇳🇬</span>
                 <div class="logo-text">
@@ -57,11 +58,20 @@
         <main class="main-content">
             <!-- Header -->
             <header class="main-header">
-                <div class="header-title-wrapper">
-                    <h2 id="page-title">Dashboard Overview</h2>
-                    <p class="subtitle" id="page-subtitle">Track compliance and excessive campaign expenditures in Nigerian elections</p>
+                <div class="header-left" style="display: flex; align-items: center; gap: 0.75rem; flex-grow: 1;">
+                    <button id="menu-toggle" class="menu-toggle-btn" aria-label="Toggle Menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon" style="width: 24px; height: 24px;">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="header-title-wrapper">
+                        <h2 id="page-title">Dashboard Overview</h2>
+                        <p class="subtitle" id="page-subtitle">Track compliance and excessive campaign expenditures in Nigerian elections</p>
+                    </div>
                 </div>
-                <div class="header-actions" style="display: flex; gap: 0.75rem;">
+                <div class="header-actions" style="display: flex; gap: 0.75rem; flex-shrink: 0;">
                     <div class="currency-badge" style="border-color: rgba(59, 130, 246, 0.3);">
                         <span>Electoral Cycle: <strong>2023 - 2027 Period</strong></span>
                     </div>

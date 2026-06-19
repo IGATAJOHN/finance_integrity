@@ -958,3 +958,155 @@ input[type="number"]:focus {
     from { transform: translateX(0); opacity: 1; }
     to { transform: translateX(120%); opacity: 0; }
 }
+
+/* Responsive Navigation Elements (Default Hidden) */
+.menu-toggle-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition-smooth);
+}
+
+.menu-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-close-btn {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.75rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.sidebar-close-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Mobile Media Queries */
+@media (max-width: 768px) {
+    .menu-toggle-btn {
+        display: flex;
+    }
+
+    .sidebar-close-btn {
+        display: block;
+    }
+
+    .app-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 2000;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.active {
+        transform: translateX(280px);
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 1.25rem;
+        margin: 0;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header-left {
+        width: 100%;
+    }
+
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .currency-badge {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Grids & Cards */
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .candidates-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .laws-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Estimator layout reset */
+    .sticky-card {
+        position: static !important;
+        margin-top: 1.5rem;
+    }
+
+    .mega-spend {
+        font-size: 2rem;
+    }
+
+    /* Modals & Overlays */
+    .modal-content {
+        padding: 1.5rem;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-candidate-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .modal-table th, .modal-table td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    /* Map components sizing */
+    .map-card {
+        min-height: 320px;
+    }
+
+    .map-wrapper {
+        min-height: 280px;
+    }
+
+    /* Toasts adjustment for phone viewports */
+    #toast-container {
+        left: 1rem !important;
+        right: 1rem !important;
+        bottom: 1rem !important;
+    }
+
+    .toast {
+        min-width: 0;
+        width: 100%;
+    }
+}
