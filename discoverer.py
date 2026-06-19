@@ -3,7 +3,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from scraper import scrape_article, get_youtube_transcript
+from scraper import scrape_article, get_youtube_transcript, get_candidate_defaults
 
 # Load environment
 load_dotenv()
@@ -93,7 +93,7 @@ def discover_rallies(candidate_name: str):
         prompt = f"""
         You are a campaign finance auditor. Below are up to 3 different news/media sources covering campaign activities for "{candidate_name}" in Nigeria.
         Analyze and compare the texts. Resolve any discrepancies and calculate a balanced, consensus-driven estimate of the logistics variables:
-
+        
         Extract the following metrics:
         - candidate: Name of the candidate (must match: "Asiwaju Bola Tinubu", "Atiku Abubakar", "Peter Obi", "Babajide Sanwo-Olu", "Seyi Makinde", "Abdulrahman Abdulrazaq", "Adams Oshiomhole", or null).
         - state: The location/state of the rally.
@@ -102,10 +102,10 @@ def discover_rallies(candidate_name: str):
         - delegates: Number of mobilized attendees. (If numbers differ e.g., one source says 5,000 another says 10,000, calculate a logical average like 7500. Default: 5000).
         - venue_cost: Stadium/arena hire. (Default: 5000000).
         - publicity_cost: Media ads/billboards cost. (Default: 15000000).
-
+        
         Provide your answer STRICTLY as a raw JSON object with keys:
         "candidate", "state", "buses", "suvs", "delegates", "venue_cost", "publicity_cost"
-
+        
         SOURCES:
         {compiled_sources_text}
         """
@@ -137,11 +137,12 @@ def discover_rallies(candidate_name: str):
         fuel_price = 1200.0
         allowance = 10000.0
 
-        buses = parsed_data.get("buses", 100)
-        suvs = parsed_data.get("suvs", 20)
-        delegates = parsed_data.get("delegates", 5000)
-        venue_cost = parsed_data.get("venue_cost", 5000000.0)
-        publicity_cost = parsed_data.get("publicity_cost", 15000000.0)
+        defaults = get_candidate_defaults(candidate_name)
+        buses = parsed_data.get("buses") or defaults["buses"]
+        suvs = parsed_data.get("suvs") or defaults["suvs"]
+        delegates = parsed_data.get("delegates") or defaults["delegates"]
+        venue_cost = parsed_data.get("venue_cost") or defaults["venue_cost"]
+        publicity_cost = parsed_data.get("publicity_cost") or defaults["publicity_cost"]
 
         # Calculations
         bus_total = buses * bus_hire_cost

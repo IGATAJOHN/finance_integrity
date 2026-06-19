@@ -82,6 +82,10 @@ function populateCandidateDropdown() {
             discoverSelect.appendChild(optDisc);
         }
     });
+    
+    if (candidatesData.length > 0) {
+        loadCandidateProfilePreset(candidatesData[0]);
+    }
 }
 
 // Navigation/Tab switching logic
@@ -103,6 +107,47 @@ document.querySelectorAll(".nav-item").forEach(button => {
             document.getElementById("page-subtitle").innerText = "Methodological guidelines, pricing baselines, and audit compliance equations";
         }
     });
+});
+
+// Load candidate profile presets into the estimator based on category
+function loadCandidateProfilePreset(candidate) {
+    if (!candidate) return;
+    
+    const category = candidate.category;
+    if (category === "presidential") {
+        busInput.value = 300;
+        suvInput.value = 50;
+        delegatesInput.value = 15000;
+        venueInput.value = 10000000;
+        publicityInput.value = 25000000;
+    } else if (category === "gubernatorial") {
+        busInput.value = 120;
+        suvInput.value = 25;
+        delegatesInput.value = 6000;
+        venueInput.value = 5000000;
+        publicityInput.value = 12000000;
+    } else { // senatorial
+        busInput.value = 35;
+        suvInput.value = 10;
+        delegatesInput.value = 1800;
+        venueInput.value = 1500000;
+        publicityInput.value = 3000000;
+    }
+
+    if (candidate.state) {
+        const locSelect = document.getElementById("est-location-select");
+        if (locSelect && [...locSelect.options].some(o => o.value === candidate.state)) {
+            locSelect.value = candidate.state;
+        }
+    }
+    updateCalculator();
+}
+
+// Add change listener to candidate dropdown
+document.getElementById("est-cand-select").addEventListener("change", (e) => {
+    const candId = parseInt(e.target.value);
+    const candidate = candidatesData.find(c => c.id === candId);
+    loadCandidateProfilePreset(candidate);
 });
 
 // Overview stats render

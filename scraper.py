@@ -48,6 +48,36 @@ def get_youtube_transcript(video_url: str):
         print(f"Error fetching YouTube transcript for {video_id}: {e}")
         return None
 
+def get_candidate_defaults(candidate_name: str):
+    name_lower = candidate_name.lower() if candidate_name else ""
+    pres_names = ["tinubu", "atiku", "obi", "kwankwaso", "abiola", "adebayo", "presidential"]
+    sen_names = ["oshiomhole", "akpabio", "umahi", "senator", "senatorial"]
+    
+    if any(n in name_lower for n in pres_names):
+        return {
+            "buses": 300,
+            "suvs": 50,
+            "delegates": 15000,
+            "venue_cost": 10000000.0,
+            "publicity_cost": 25000000.0
+        }
+    elif any(n in name_lower for n in sen_names):
+        return {
+            "buses": 35,
+            "suvs": 10,
+            "delegates": 1800,
+            "venue_cost": 1500000.0,
+            "publicity_cost": 3000000.0
+        }
+    else:
+        return {
+            "buses": 120,
+            "suvs": 25,
+            "delegates": 6000,
+            "venue_cost": 5000000.0,
+            "publicity_cost": 12000000.0
+        }
+
 def run_heuristics_fallback(combined_text):
     """
     Standard regex-based pattern matching fallback if AI API is unavailable or fails.
@@ -75,18 +105,20 @@ def run_heuristics_fallback(combined_text):
             detected_state = state
             break
 
+    defaults = get_candidate_defaults(detected_candidate or "")
+
     bus_match = re.search(r'(\d{1,4})\s*(?:coaster\s*)?buses', combined_text, re.IGNORECASE)
-    buses = int(bus_match.group(1)) if bus_match else 150
+    buses = int(bus_match.group(1)) if bus_match else defaults["buses"]
 
     suv_match = re.search(r'(\d{1,3})\s*(?:suvs|suv|vehicles in convoy|convoy cars|cars)', combined_text, re.IGNORECASE)
-    suvs = int(suv_match.group(1)) if suv_match else 25
+    suvs = int(suv_match.group(1)) if suv_match else defaults["suvs"]
 
     delegate_match = re.search(r'(\d{1,3}(?:,\d{3})+|\d{3,6})\s*(?:delegates|supporters|supporters packed|crowd|youths|people|attendees)', combined_text, re.IGNORECASE)
     if delegate_match:
         delegates_str = delegate_match.group(1).replace(',', '')
         delegates = int(delegates_str)
     else:
-        delegates = 8000
+        delegates = defaults["delegates"]
 
     return {
         "candidate": detected_candidate,
@@ -94,8 +126,8 @@ def run_heuristics_fallback(combined_text):
         "buses": buses,
         "suvs": suvs,
         "delegates": delegates,
-        "venue_cost": 5000000.0,
-        "publicity_cost": 15000000.0
+        "venue_cost": defaults["venue_cost"],
+        "publicity_cost": defaults["publicity_cost"]
     }
 
 def scrape_article(url: str):
