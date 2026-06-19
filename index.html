@@ -42,6 +42,10 @@
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Electoral Laws
                 </button>
+                <button class="nav-item" data-tab="methodology">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    Methodology
+                </button>
             </nav>
             <div class="sidebar-footer">
                 <p>Electoral Act 2022 & 2026 Audit</p>
@@ -440,6 +444,78 @@
                         <li><strong>Section 89:</strong> Political parties must submit audit reports of campaign expenses within 6 months after an election.</li>
                         <li><strong>Penalties:</strong> Candidates breaching these sections are liable to fines of up to ₦1,000,000 or imprisonment.</li>
                     </ul>
+                </div>
+            </section>
+
+            <!-- Tab: Methodology -->
+            <section id="tab-methodology" class="tab-panel">
+                <div class="dashboard-card glass">
+                    <h3>PoliTrack Audit Methodology</h3>
+                    <p class="card-description">A transparent guide explaining how PoliTrack estimates, calculates, and defends campaign expenditure logs.</p>
+                    
+                    <div class="provisions-list" style="padding-left: 0; list-style: none;">
+                        <h4 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">1. Core Calculation Formulas</h4>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem;">
+                            Political rally costs are computed programmatically using direct market parameters. The total cost of any rally event is the sum of four main logistics areas:
+                        </p>
+                        <ul class="provisions-list" style="margin-bottom: 2rem;">
+                            <li><strong>Transportation & Logistics (Buses):</strong> <code>Buses Hired × Bus Hire Cost per Day</code> (Covers vehicles mobilized to convey delegates from local governments).</li>
+                            <li><strong>Convoy Fuel Expenses:</strong> <code>(Buses + SUVs) × Fuel Liters × Price per Liter</code> (Estimates the cost of fueling convoy vehicles and transport buses).</li>
+                            <li><strong>Mobilization Allowances:</strong> <code>Number of Attendees × Allowance per Attendee</code> (Stipends paid to delegates and attendees to cover local transportation and feeding).</li>
+                            <li><strong>Operations & Media:</strong> <code>Venue Hire + Publicity Cost</code> (Covers renting stadiums/halls, stage setups, sound systems, billboards, and radio/TV coverage).</li>
+                        </ul>
+
+                        <h4 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">2. Defensible Market Baseline Rates</h4>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem;">
+                            To ensure estimates are defensible in public discourse, PoliTrack uses conservative baseline rates compiled from local market surveys in Nigeria:
+                        </p>
+                        <table class="modal-table" style="margin-bottom: 2rem;">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Standard Baseline Rate</th>
+                                    <th>Market Rationale / Defense Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Bus Hire (Coaster/HiAce)</strong></td>
+                                    <td>₦60,000 / day</td>
+                                    <td>Average commercial charter rate in major states (Lagos, Abuja, Rivers).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Convoy SUV Fuel</strong></td>
+                                    <td>50 Liters / vehicle</td>
+                                    <td>Conservative consumption estimate for inter-city travel and idling.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fuel Price</strong></td>
+                                    <td>₦1,200 / Liter</td>
+                                    <td>Reflects current average PMS prices at filling stations.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Transport Allowance</strong></td>
+                                    <td>₦10,000 / person</td>
+                                    <td>Standard stipend distributed by campaigns to cover logistics.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stadium/Venue Hire</strong></td>
+                                    <td>₦5,000,000</td>
+                                    <td>Standard government rental fees for major city stadiums.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Campaign Publicity</strong></td>
+                                    <td>₦15,000,000</td>
+                                    <td>Estimates billboards, radio jingles, and television ads.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">3. AI Semantic Parsing (OpenAI Integration)</h4>
+                        <p style="color: var(--text-secondary); margin-size: 0.95rem;">
+                            When you paste an article URL or run the <strong>Auto-Discovery</strong> tool, the system crawls the text and asks OpenAI to identify quantities (e.g. "thousands of supporters", "120 buses"). If specific numbers are missing, the AI applies conservative fallbacks based on descriptions (e.g., matching a "national stadium" crowd description to standard stadium capacities).
+                        </p>
+                    </div>
                 </div>
             </section>
         </main>

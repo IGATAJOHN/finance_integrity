@@ -99,6 +99,8 @@ document.querySelectorAll(".nav-item").forEach(button => {
         if (button.getAttribute("data-tab") === "overview") {
             document.getElementById("page-subtitle").innerText = "Track compliance and excessive campaign expenditures in Nigerian elections";
             loadData();
+        } else if (button.getAttribute("data-tab") === "methodology") {
+            document.getElementById("page-subtitle").innerText = "Methodological guidelines, pricing baselines, and audit compliance equations";
         }
     });
 });
