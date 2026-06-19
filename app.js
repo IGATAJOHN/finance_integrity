@@ -109,30 +109,62 @@ document.querySelectorAll(".nav-item").forEach(button => {
     });
 });
 
-// Load candidate profile presets into the estimator based on category
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+
+function roundToStep(value, step) {
+    return Math.round(value / step) * step;
+}
+
+function setCandidateSpecificPreset(candidate) {
+    const categoryDefaults = {
+        presidential: {
+            buses: 300,
+            suvs: 50,
+            delegates: 15000,
+            venueCost: 10000000,
+            publicityCost: 25000000,
+            baselineCost: 221000000
+        },
+        gubernatorial: {
+            buses: 120,
+            suvs: 25,
+            delegates: 6000,
+            venueCost: 5000000,
+            publicityCost: 12000000,
+            baselineCost: 83200000
+        },
+        senatorial: {
+            buses: 35,
+            suvs: 10,
+            delegates: 1800,
+            venueCost: 1500000,
+            publicityCost: 3000000,
+            baselineCost: 27200000
+        }
+    };
+    const fallback = categoryDefaults.senatorial;
+    const defaults = categoryDefaults[candidate.category] || fallback;
+    const ralliesHeld = Number(candidate.ralliesHeld) || 0;
+    const estimatedSpend = Number(candidate.estimatedSpend) || 0;
+    const candidateAverage = ralliesHeld > 0 ? estimatedSpend / ralliesHeld : defaults.baselineCost;
+    const scale = candidateAverage / defaults.baselineCost;
+    const logisticsScale = clamp(scale, 0.45, 8);
+    const spendScale = clamp(scale, 0.6, 25);
+
+    busInput.value = clamp(roundToStep(defaults.buses * Math.sqrt(logisticsScale), 10), 10, 1000);
+    suvInput.value = clamp(roundToStep(defaults.suvs * Math.sqrt(logisticsScale), 5), 5, 100);
+    delegatesInput.value = clamp(roundToStep(defaults.delegates * logisticsScale, 500), 500, 50000);
+    venueInput.value = Math.round(defaults.venueCost * spendScale);
+    publicityInput.value = Math.round(defaults.publicityCost * spendScale);
+}
+
+// Load candidate profile presets into the estimator using candidate-specific history
 function loadCandidateProfilePreset(candidate) {
     if (!candidate) return;
-    
-    const category = candidate.category;
-    if (category === "presidential") {
-        busInput.value = 300;
-        suvInput.value = 50;
-        delegatesInput.value = 15000;
-        venueInput.value = 10000000;
-        publicityInput.value = 25000000;
-    } else if (category === "gubernatorial") {
-        busInput.value = 120;
-        suvInput.value = 25;
-        delegatesInput.value = 6000;
-        venueInput.value = 5000000;
-        publicityInput.value = 12000000;
-    } else { // senatorial
-        busInput.value = 35;
-        suvInput.value = 10;
-        delegatesInput.value = 1800;
-        venueInput.value = 1500000;
-        publicityInput.value = 3000000;
-    }
+
+    setCandidateSpecificPreset(candidate);
 
     if (candidate.state) {
         const locSelect = document.getElementById("est-location-select");
